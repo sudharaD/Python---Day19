@@ -33,7 +33,7 @@ import random
 screen = t.Screen()
 turtle_list = []
 
-COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
+COLORS = ["purple", "orange", "yellow", "green", "blue", "red"]
 x_value = -230
 y_value = -100
 color = 0
@@ -46,34 +46,40 @@ for _ in range(6):
     turtle = t.Turtle()
     turtle.shape("turtle")
     turtle.penup()
-    turtle.color(COLORS[color])
+    turtle.color("Black", COLORS[_])
     turtle.goto(x=x_value, y=-y_value)
     y_value += 40
     turtle_list.append(turtle)
     color += 1
 
 turtle.penup()
-# print(turtle_list)
 
+print(turtle_list[1].color())
 turtle_count = 0
 
 while not game_over:
     def pick_one_turtle():
+        highest_xcor = 0
         for turtle_name in turtle_list:
-            turtle_name.forward(random.randint(8, 15))
-            if turtle_name.xcor() > 210:
+            turtle_name.forward(random.choice([0, 5, 10]))
+        for turtle_name in turtle_list:
+            if turtle_name.xcor() > highest_xcor:
+                highest_xcor = turtle_name.xcor()
                 win_turtle_color = turtle_name.color()[1]
-                print(win_turtle_color)
-                return [False, win_turtle_color]
+        if highest_xcor > 210:
+            print("a")
+            # print(win_turtle_color)
+            return [False, win_turtle_color]
         return [True]
 
-    if not pick_one_turtle()[0]:
+    return_values = pick_one_turtle()
+    if not return_values[0]:
         break
 
-if user_bet == pick_one_turtle()[1]:
-    print(f"win: {(pick_one_turtle())[1]} - winner")
+if user_bet == return_values[1]:
+    print(f"win: {return_values[1]}\nYou win!")
 else:
-    print(f"win: {pick_one_turtle()[1]} - looser")
+    print(f"win: {return_values[1]}\nYou loose!")
 screen.exitonclick()
 
 
